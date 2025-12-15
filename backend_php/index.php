@@ -36,6 +36,7 @@ error_log("Router - Method: $request_method");
 
 // Route patterns
 $routes = [
+    ['method' => 'GET', 'pattern' => '/login', 'file' => 'login.php'],
     ['method' => 'GET', 'pattern' => '/health', 'file' => 'routes/health.php'],
     ['method' => 'GET', 'pattern' => '/debug', 'file' => 'debug.php'],
     ['method' => 'GET', 'pattern' => '/auth/me', 'file' => 'routes/auth.php'],
@@ -153,6 +154,10 @@ try {
                     if (isset($matches[3])) {
                         $_GET['subpath'] = $matches[3];
                     }
+                }
+                // Set content type for HTML routes
+                if ($route['file'] === 'login.php') {
+                    header('Content-Type: text/html');
                 }
                 require_once $route['file'];
                 $matched = true;
