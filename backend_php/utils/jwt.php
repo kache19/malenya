@@ -1,7 +1,9 @@
 <?php
 // Simple JWT implementation
 class JWT {
-    private static $secret = 'your-secret-key'; // Should be from env
+    private static function getSecret() {
+        return getenv('JWT_SECRET') ?: 'your-secret-key';
+    }
 
     public static function encode($payload) {
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
@@ -9,7 +11,7 @@ class JWT {
 
         $payload_encoded = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode($payload)));
 
-        $signature = hash_hmac('sha256', $header_encoded . "." . $payload_encoded, self::$secret, true);
+        $signature = hash_hmac('sha256', $header_encoded . "." . $payload_encoded, self::getSecret(), true);
         $signature_encoded = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
 
         return $header_encoded . "." . $payload_encoded . "." . $signature_encoded;
@@ -25,7 +27,7 @@ class JWT {
         $payload = $parts[1];
         $signature = $parts[2];
 
-        $expected_signature = hash_hmac('sha256', $header . "." . $payload, self::$secret, true);
+        $expected_signature = hash_hmac('sha256', $header . "." . $payload, self::getSecret(), true);
         $expected_signature_encoded = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($expected_signature));
 
         if ($signature !== $expected_signature_encoded) {
