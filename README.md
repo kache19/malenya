@@ -2,7 +2,7 @@
 <<<<<<< HEAD
 # Pharmacy Management System (PMS)
 
-A comprehensive pharmacy management system built with React, TypeScript, Node.js, and PostgreSQL. Features include inventory management, point-of-sale, finance tracking, staff management, and AI-powered prescription analysis.
+A comprehensive pharmacy management system built with React, TypeScript, PHP, and MySQL. Features include inventory management, point-of-sale, finance tracking, staff management, and AI-powered prescription analysis.
 
 ## Features
 
@@ -19,91 +19,59 @@ A comprehensive pharmacy management system built with React, TypeScript, Node.js
 
 ### Prerequisites
 
-- Docker and Docker Compose
-- Node.js 18+ (for local development)
-- PostgreSQL (handled by Docker)
+- XAMPP (or any Apache/PHP/MySQL stack)
+- Node.js 18+ (for frontend development)
+- MySQL
 
 ### Local Development
 
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd pms
+   cd malenya
    ```
 
-2. **Environment Setup**
+2. **Setup XAMPP**
+   - Install and start XAMPP
+   - Place the project in `C:/xampp/htdocs/malenyapms/malenya` (adjust path as needed)
+   - Ensure Apache and MySQL are running
+
+3. **Database Setup**
+   - Open phpMyAdmin (http://localhost/phpmyadmin)
+   - Create a database named `malenya_pms`
+   - Import `backend/schema_mysql.sql`
+
+4. **Install Frontend Dependencies**
    ```bash
-   cp backend/.env.example backend/.env
-   # Edit backend/.env with your configuration
-   ```
-
-3. **Run with Docker**
-   ```bash
-   ./deploy.sh
-   ```
-
-4. **Access the application**
-   - Frontend: http://localhost
-   - Backend API: http://localhost:5000
-   - Health Check: http://localhost:5000/api/system/health
-
-### Manual Setup (Development)
-
-1. **Install dependencies**
-   ```bash
+   cd frontend
    npm install
-   cd backend && npm install
    ```
 
-2. **Start PostgreSQL**
+5. **Start Development Servers**
    ```bash
-   # Using Docker
-   docker run -d --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=password postgres:15
-   ```
-
-3. **Database setup**
-   ```bash
-   cd backend
-   npm run migrate
-   ```
-
-4. **Start development servers**
-   ```bash
-   # Terminal 1: Frontend
+   # Terminal 1: Frontend (React dev server)
+   cd frontend
    npm run dev
 
-   # Terminal 2: Backend
-   cd backend
-   npm run dev
+   # Backend is served via Apache at http://localhost/malenyapms/malenya/backend/index.php/api/
    ```
+
+6. **Access the application**
+   - Frontend: http://localhost:3000 (or as configured in Vite)
+   - Backend API: http://localhost/malenyapms/malenya/backend/index.php/api/
 
 ## Production Deployment
 
-### Using Docker Compose
-
-1. **Configure environment**
-   ```bash
-   cp backend/.env.example backend/.env
-   # Edit with production values
-   ```
-
-2. **Deploy**
-   ```bash
-   ./deploy.sh
-   ```
-
-### Manual Production Setup
-
 1. **Build frontend**
    ```bash
+   cd frontend
    npm run build
    ```
 
-2. **Start backend with PM2**
-   ```bash
-   cd backend
-   npm run pm2:start
-   ```
+2. **Deploy to web server**
+   - Copy `frontend/dist/` contents to your web server's document root
+   - Copy `backend/` to your PHP-enabled server
+   - Configure Apache/Nginx to serve the frontend and proxy API calls to the backend
 
 3. **Setup reverse proxy** (nginx example)
    ```nginx
@@ -111,12 +79,17 @@ A comprehensive pharmacy management system built with React, TypeScript, Node.js
        listen 80;
        server_name yourdomain.com;
 
+       root /path/to/frontend/dist;
+       index index.html;
+
        location / {
-           proxy_pass http://localhost:3000;
+           try_files $uri $uri/ /index.html;
        }
 
        location /api/ {
-           proxy_pass http://localhost:5000;
+           proxy_pass http://localhost/malenyapms/malenya/backend/index.php/api/;
+           proxy_set_header Host $host;
+           proxy_set_header X-Real-IP $remote_addr;
        }
    }
    ```
@@ -134,48 +107,38 @@ A comprehensive pharmacy management system built with React, TypeScript, Node.js
 - `GET /api/staff` - List staff
 
 ### Health & Monitoring
-- `GET /api/system/health` - System health check
-- `GET /api/system/backup` - Create system backup
+- `GET /api/health` - System health check
 
 ## Database Management
 
-### Migrations
-```bash
-cd backend
-npm run migrate
-```
-
-### Backups
-```bash
-# Create backup
-npm run backup
-
-# Restore from backup
-npm run restore path/to/backup.sql
-```
+The database schema is defined in `backend/schema_mysql.sql`. Use phpMyAdmin or MySQL CLI for management.
 
 ## Environment Variables
 
-See `backend/.env.example` for all required environment variables.
+Configure database connection in `backend/config/database.php`.
 
-Key variables:
-- `DB_PASSWORD` - PostgreSQL password
-- `JWT_SECRET` - JWT signing secret
-- `GEMINI_API_KEY` - Google Gemini API key (optional)
+Key settings:
+- Database host, name, user, password
+- JWT secret
+- Gemini API key (optional)
 
 ## Development
 
 ### Project Structure
 ```
-├── components/          # React components
-├── services/           # API services
-├── data/              # Mock data
-├── backend/           # Node.js backend
-│   ├── server.js      # Main server file
-│   ├── schema.sql     # Database schema
-│   └── migrate.js     # Migration script
-├── public/            # Static assets
-└── dist/              # Built frontend
+├── frontend/            # React frontend
+│   ├── components/      # React components
+│   ├── services/        # API services
+│   ├── public/          # Static assets
+│   ├── package.json     # Frontend dependencies
+│   └── vite.config.ts   # Vite configuration
+├── backend/             # PHP backend API
+│   ├── index.php        # Main API entry point
+│   ├── routes/          # API route handlers
+│   ├── utils/           # Utilities (auth, JWT)
+│   ├── config/          # Configuration files
+│   └── schema_mysql.sql # Database schema
+└── README.md            # This file
 ```
 
 ### Available Scripts
@@ -185,28 +148,19 @@ Key variables:
 - `npm run build` - Production build
 - `npm run preview` - Preview production build
 
-**Backend:**
-- `npm run dev` - Development server with nodemon
-- `npm run start` - Production server
-- `npm run pm2:start` - Start with PM2
-- `npm run migrate` - Run database migrations
-- `npm run backup` - Create database backup
-
 ## Security
 
 - Passwords are hashed with bcrypt
 - JWT tokens for authentication
-- Input validation with Joi
-- Security headers with Helmet
+- Input validation
 - CORS configuration
-- Request logging
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests if applicable
+4. Test thoroughly
 5. Submit a pull request
 
 ## License

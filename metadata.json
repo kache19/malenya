@@ -1,7 +1,0 @@
-{
-  "name": "PMS",
-  "description": "A world-class, multi-branch Pharmacy Management System optimized for Tanzania with AI-powered clinical alerts, TRA-compliant POS, and inventory tracking.",
-  "requestFramePermissions": [
-    "camera"
-  ]
-}
