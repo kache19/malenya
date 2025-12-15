@@ -155,7 +155,7 @@
             lucide.createIcons();
 
             try {
-                const response = await fetch('https://malenyapharmacy.com/malenya_pharmacy/backend_php/api/auth/login.php', {
+                const response = await fetch('https://malenyapharmacy.com/backend_php/api/auth/login.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

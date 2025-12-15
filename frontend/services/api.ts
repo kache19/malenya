@@ -103,7 +103,7 @@ async function fetchJSON(path: string, options: RequestInit = {}) {
  * Login user and store auth token
  */
 export const login = async (username: string, password: string) => {
-  const url = 'https://malenyapharmacy.com/malenya_pharmacy/backend_php/api/auth/login.php';
+  const url = 'https://malenyapharmacy.com/backend_php/api/auth/login.php';
   const response = await fetch(url, {
     method: 'POST',
     headers: {
