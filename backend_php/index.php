@@ -26,6 +26,7 @@ $request_method = $_SERVER['REQUEST_METHOD'];
 // Remove query string
 $path = parse_url($request_uri, PHP_URL_PATH);
 // Remove base path and /api prefix
+$path = str_replace('/malenya_pharmacy/backend_php/index.php', '', $path);
 $path = str_replace('/pharmacy/backend_php/index.php', '', $path);
 $path = str_replace('/backend_php/index.php', '', $path);
 $path = str_replace('/api', '', $path);

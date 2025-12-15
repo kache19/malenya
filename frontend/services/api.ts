@@ -103,10 +103,26 @@ async function fetchJSON(path: string, options: RequestInit = {}) {
  * Login user and store auth token
  */
 export const login = async (username: string, password: string) => {
-  return fetchJSON('auth/login', {
+  const url = 'https://malenyapharmacy.com/malenya_pharmacy/backend_php/api/auth/login.php';
+  const response = await fetch(url, {
     method: 'POST',
-    body: JSON.stringify({ username, password })
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
   });
+  if (!response.ok) {
+    let errorMessage = `${response.status} ${response.statusText}`;
+    try {
+      const errorBody = await response.json();
+      errorMessage = errorBody.message || errorMessage;
+    } catch {
+      const textBody = await response.text().catch(() => '');
+      if (textBody) errorMessage = textBody;
+    }
+    throw new Error(`POST ${url} failed: ${errorMessage}`);
+  }
+  return await response.json();
 };
 
 /**
