@@ -1,5 +1,3 @@
-
-<<<<<<< HEAD
 # Pharmacy Management System (PMS)
 
 A comprehensive pharmacy management system built with React, TypeScript, PHP, and MySQL. Features include inventory management, point-of-sale, finance tracking, staff management, and AI-powered prescription analysis.
@@ -28,18 +26,18 @@ A comprehensive pharmacy management system built with React, TypeScript, PHP, an
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd malenya
+   cd malenya-1
    ```
 
 2. **Setup XAMPP**
    - Install and start XAMPP
-   - Place the project in `C:/xampp/htdocs/malenyapms/malenya` (adjust path as needed)
+   - Place the project in `C:/xampp/htdocs/pharmacy/malenya-1` (adjust path as needed)
    - Ensure Apache and MySQL are running
 
 3. **Database Setup**
    - Open phpMyAdmin (http://localhost/phpmyadmin)
-   - Create a database named `malenya_pms`
-   - Import `backend/schema_mysql.sql`
+   - Create a database named `malenyap_pms_db`
+   - Import `backend_php/schema_mysql.sql`
 
 4. **Install Frontend Dependencies**
    ```bash
@@ -53,12 +51,12 @@ A comprehensive pharmacy management system built with React, TypeScript, PHP, an
    cd frontend
    npm run dev
 
-   # Backend is served via Apache at http://localhost/malenyapms/malenya/backend/index.php/api/
+   # Backend is served via Apache at http://localhost/malenya_pharmacy/backend_php/index.php/api/
    ```
 
 6. **Access the application**
    - Frontend: http://localhost:3000 (or as configured in Vite)
-   - Backend API: http://localhost/malenyapms/malenya/backend/index.php/api/
+   - Backend API: http://localhost/malenya_pharmacy/backend_php/index.php/api/
 
 ## Production Deployment
 
@@ -70,7 +68,7 @@ A comprehensive pharmacy management system built with React, TypeScript, PHP, an
 
 2. **Deploy to web server**
    - Copy `frontend/dist/` contents to your web server's document root
-   - Copy `backend/` to your PHP-enabled server
+   - Copy `backend_php/` to your PHP-enabled server
    - Configure Apache/Nginx to serve the frontend and proxy API calls to the backend
 
 3. **Setup reverse proxy** (nginx example)
@@ -87,7 +85,7 @@ A comprehensive pharmacy management system built with React, TypeScript, PHP, an
        }
 
        location /api/ {
-           proxy_pass http://localhost/malenyapms/malenya/backend/index.php/api/;
+           proxy_pass http://localhost/malenya_pharmacy/backend_php/index.php/api/;
            proxy_set_header Host $host;
            proxy_set_header X-Real-IP $remote_addr;
        }
@@ -111,11 +109,11 @@ A comprehensive pharmacy management system built with React, TypeScript, PHP, an
 
 ## Database Management
 
-The database schema is defined in `backend/schema_mysql.sql`. Use phpMyAdmin or MySQL CLI for management.
+The database schema is defined in `backend_php/schema_mysql.sql`. Use phpMyAdmin or MySQL CLI for management.
 
 ## Environment Variables
 
-Configure database connection in `backend/config/database.php`.
+Configure database connection in `backend_php/config/database.php`.
 
 Key settings:
 - Database host, name, user, password
@@ -132,7 +130,7 @@ Key settings:
 │   ├── public/          # Static assets
 │   ├── package.json     # Frontend dependencies
 │   └── vite.config.ts   # Vite configuration
-├── backend/             # PHP backend API
+├── backend_php/         # PHP backend API
 │   ├── index.php        # Main API entry point
 │   ├── routes/          # API route handlers
 │   ├── utils/           # Utilities (auth, JWT)
@@ -166,5 +164,3 @@ Key settings:
 ## License
 
 This project is licensed under the MIT License.
-=======
->>>>>>> c50224702b61b39be1fd2547517f6f47c22a8bbd

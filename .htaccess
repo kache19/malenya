@@ -1,0 +1,20 @@
+RewriteEngine On
+
+# Route /api/* requests to backend
+RewriteRule ^api/(.*)$ backend_php/index.php/api/$1 [L,QSA]
+
+# Frontend SPA routing - send everything else to index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/backend_php/
+RewriteRule ^(.*)$ index.html [L,QSA]
+
+# Security headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-XSS-Protection "1; mode=block"
+
+# CORS headers
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization"

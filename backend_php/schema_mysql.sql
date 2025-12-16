@@ -58,31 +58,6 @@ CREATE TABLE IF NOT EXISTS branch_inventory (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- Products table (no dependencies)
-CREATE TABLE IF NOT EXISTS products (
-    id VARCHAR(50) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    generic_name VARCHAR(255),
-    category VARCHAR(100),
-    cost_price DECIMAL(10,2) NOT NULL,
-    base_price DECIMAL(10,2) NOT NULL,
-    unit VARCHAR(50) DEFAULT 'Strip',
-    min_stock_level INTEGER DEFAULT 10,
-    requires_prescription BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Branch inventory table (depends on branches and products)
-CREATE TABLE IF NOT EXISTS branch_inventory (
-    branch_id VARCHAR(50),
-    product_id VARCHAR(50),
-    quantity INTEGER NOT NULL DEFAULT 0,
-    custom_price DECIMAL(10,2),
-    PRIMARY KEY (branch_id, product_id),
-    FOREIGN KEY (branch_id) REFERENCES branches(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
-);
-
 -- Drug batches table (depends on branches and products)
 CREATE TABLE IF NOT EXISTS drug_batches (
     id INT AUTO_INCREMENT PRIMARY KEY,

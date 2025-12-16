@@ -6,10 +6,10 @@ This is the PHP backend for the Malenya Pharmaceutical Company Pharmacy Manageme
 
 ### 1. Database Setup
 
-1. Create a MySQL database named `pms_db`
+1. Create a MySQL database named `malenyap_pms_db`
 2. Run the schema file:
    ```bash
-   mysql -u root -p pms_db < schema_mysql.sql
+   mysql -u root -p malenyap_pms_db < schema_mysql.sql
    ```
 
 ### 2. Seed Basic Data
@@ -30,9 +30,9 @@ This will create:
 Update `config/database.php` with your MySQL credentials:
 ```php
 $host = getenv('DB_HOST') ?: 'localhost';
-$dbname = getenv('DB_NAME') ?: 'pms_db';
-$user = getenv('DB_USER') ?: 'root';
-$password = getenv('DB_PASSWORD') ?: 'your_password';
+$dbname = getenv('DB_NAME') ?: 'malenyap_pms_db';
+$user = getenv('DB_USER') ?: 'malenyap_malenya';
+$password = getenv('DB_PASSWORD') ?: 'malenya12345';
 ```
 
 ### 4. Test Invoice Generation

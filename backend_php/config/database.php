@@ -1,9 +1,9 @@
 <?php
 // Database configuration - LOCALHOST ONLY
 $host = 'localhost'; // Strictly localhost - no external connections
-$dbname = getenv('DB_NAME') ?: 'malenyap_pms_db';
-$user = getenv('DB_USER') ?: 'malenyap_malenya';
-$password = getenv('DB_PASSWORD') ?: 'malenya12345';
+$dbname = getenv('DB_NAME') ?: 'rodlineh_pharma';
+$user = getenv('DB_USER') ?: 'rodlineh_pharma';
+$password = getenv('DB_PASSWORD') ?: '@200r320KK';
 $port = 3306; // Standard MySQL port
 
 try {

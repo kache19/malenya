@@ -15,7 +15,7 @@ import {
   PaymentMethod
 } from '../types';
 
-const API_URL = 'malenya_pharmacy/backend_php/index.php/api/';
+const API_URL = '/api/';
 const REQUEST_TIMEOUT = 30000; // 30 seconds
 
 /**
@@ -103,26 +103,10 @@ async function fetchJSON(path: string, options: RequestInit = {}) {
  * Login user and store auth token
  */
 export const login = async (username: string, password: string) => {
-  const url = 'https://malenyapharmacy.com/backend_php/api/auth/login.php';
-  const response = await fetch(url, {
+  return fetchJSON('auth/login', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ username, password })
   });
-  if (!response.ok) {
-    let errorMessage = `${response.status} ${response.statusText}`;
-    try {
-      const errorBody = await response.json();
-      errorMessage = errorBody.message || errorMessage;
-    } catch {
-      const textBody = await response.text().catch(() => '');
-      if (textBody) errorMessage = textBody;
-    }
-    throw new Error(`POST ${url} failed: ${errorMessage}`);
-  }
-  return await response.json();
 };
 
 /**
