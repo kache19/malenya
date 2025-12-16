@@ -1,7 +1,12 @@
 RewriteEngine On
 
-# Route /api/* requests to backend
-RewriteRule ^api/(.*)$ backend_php/index.php/api/$1 [L,QSA]
+# Set environment variables for database (update these values for malenyapharmacy.com)
+# SetEnv DB_NAME "your_actual_db_name"
+# SetEnv DB_USER "your_actual_db_user"
+# SetEnv DB_PASSWORD "your_actual_db_password"
+
+# Route /api/* requests to proxy (which forwards to working server)
+RewriteRule ^api/(.*)$ backend_php/api_proxy.php/api/$1 [L,QSA]
 
 # Frontend SPA routing - send everything else to index.html
 RewriteCond %{REQUEST_FILENAME} !-f
